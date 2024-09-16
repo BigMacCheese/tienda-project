@@ -1,0 +1,381 @@
+{
+	"info": {
+		"_postman_id": "9da5b23b-6335-4df2-a34f-841b271c0ae0",
+		"name": "Tienda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37902422"
+	},
+	"item": [
+		{
+			"name": "Crear una tienda válida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()\r",
+							"pm.globals.set(\"tienda_id\", data.id);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"tienda juana\",\r\n    \"ciudad\": \"MDE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{base_url}}/tiendas",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tiendas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear una tienda inválida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 412\", function () {\r",
+							"    pm.response.to.have.status(412);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get expected error message\", function () {\r",
+							"    var data = pm.response.json();\r",
+							"    pm.expect(data.message).to.eql(\"La ciudad de la tienda no es un codigo de tres caracteres\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"tienda juana\",\r\n    \"ciudad\": \"Medellin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{base_url}}/tiendas",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tiendas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todas las tiendas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{base_url}}/tiendas",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tiendas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener una tienda por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{base_url}}/tiendas/{{tienda_id}}",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tiendas",
+						"{{tienda_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener una tienda por un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get expected error message\", function () {\r",
+							"    var data = pm.response.json();\r",
+							"    pm.expect(data.message).to.eql(\"La tienda con el id dado no existe\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{base_url}}/tiendas/00000000-0000-0000-0000-000000000000",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tiendas",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar una tienda",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\":\"san juana\",\r\n    \"ciudad\":\"BOG\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{base_url}}/tiendas/{{tienda_id}}",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tiendas",
+						"{{tienda_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar una tienda con un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get expected error message\", function () {\r",
+							"    var data = pm.response.json();\r",
+							"    pm.expect(data.message).to.eql(\"La tienda con el id dado no existe\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\":\"san juana\",\r\n    \"ciudad\":\"BOG\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{base_url}}/tiendas/00000000-0000-0000-0000-000000000000",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tiendas",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar una tienda por su ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\":\"san juana\",\r\n    \"ciudad\":\"BOG\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{base_url}}/tiendas/{{tienda_id}}",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tiendas",
+						"{{tienda_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar una tienda con un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get expected error message\", function () {\r",
+							"    var data = pm.response.json();\r",
+							"    pm.expect(data.message).to.eql(\"La tienda con el id dado no existe\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\":\"san juana\",\r\n    \"ciudad\":\"BOG\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{base_url}}/tiendas/00000000-0000-0000-0000-000000000000",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"tiendas",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
